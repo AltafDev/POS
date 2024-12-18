@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7 to 9</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    #posForm {
+        margin-bottom: 20px;
+    }
+
+    #posForm label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    #posForm input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    #posForm button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    #posForm button:hover {
+        background-color: #0056b3;
+    }
+
+    #cart {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    #cart h2 {
+        margin-bottom: 10px;
+    }
+
+    #cartItems {
+        list-style: none;
+        padding: 0;
+    }
+
+    #cartItems li {
+        margin-bottom: 5px;
+    }
+
+    #totalAmount {
+        font-weight: bold;
+    }
+
+    .all {
+        width: 50%;
+        height: 100%;
+        margin: auto;
+    }
+</style>
+
+<body>
+    <div class="all">
+        <h1>POS</h1>
+        <form id="posForm">
+            <label for="productName">Product Name</label>
+            <input id="productName" type="text" placeholder="Enter Product Name" />
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" placeholder="Enter Quantity" />
+            <label for="price">Price</label>
+            <input id="price" type="number" placeholder="Enter Price" />
+            <button type="submit">Add to Cart</button>
+        </form>
+
+        <div id="cart">
+            <h2>Shopping Cart</h2>
+            <ul id="cartItems"></ul>
+            <p>Total: <span id="totalAmount">0</span></p>
+        </div>
+
+    </div>
+    <script>
+        const cart = [];
+        let total = 0;
+
+        function addToCart(productName, quantity, price) {
+            const itemTotal = quantity * price;
+            total += itemTotal;
+
+            const item = {
+                productName: productName,
+                quantity: quantity,
+                price: price,
+                total: itemTotal
+            };
+
+            cart.push(item);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById("cartItems");
+            const totalAmount = document.getElementById("totalAmount");
+
+            cartItems.innerHTML = "";
+            totalAmount.textContent = total.toFixed(2);
+
+            cart.forEach(item => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `${item.quantity} x ${item.productName} - $${item.total.toFixed(2)}`;
+                cartItems.appendChild(listItem);
+            });
+        }
+
+        const posForm = document.getElementById("posForm");
+        posForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            const productName = document.getElementById("productName").value;
+            const quantity = parseInt(document.getElementById("quantity").value);
+            const price = parseFloat(document.getElementById("price").value);
+
+
+
+            addToCart(productName, quantity, price);
+            posForm.reset();
+        });
+    </script>
+</body>
+
+</html>
